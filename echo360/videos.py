@@ -1,5 +1,6 @@
 import os
 import re
+from os.path import exists
 
 import dateutil.parser
 import operator
@@ -288,10 +289,12 @@ class EchoCloudVideo(EchoVideo):
                 if self.download_alternative_feeds
                 else filename
             )
-            result = self.download_single(
-                session, single_url, output_dir, new_filename, pool_size
-            )
-            final_result = final_result and result
+            print(os.path.join(output_dir, "{}.mp4".format(new_filename)))
+            if not exists(os.path.join(output_dir, "{}.mp4".format(new_filename))):
+                result = self.download_single(
+                    session, single_url, output_dir, new_filename, pool_size
+                )
+                final_result = final_result and result
 
         return final_result
 
